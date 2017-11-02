@@ -1,6 +1,6 @@
 from bottle import route, run, template, static_file, request, get, post
 from couchdb import Server
-from os import listdir, makedirs, getcwd, rename
+from os import listdir, makedirs, getcwd, rename, environ
 from os.path import isfile, join, exists, dirname
 from plupload import plupload
 from shutil import copyfile
@@ -97,7 +97,7 @@ def getDocs():
         db = couch['directories']
     except:
         db = couch.create['directories']
-        
+
     docs = db.view('_all_docs', include_docs=True);
     data = []
 
@@ -132,7 +132,7 @@ def serve_gallery_picture(gallery, picture):
 def serve_pictures(gallery, name):
     return static_file(name, root='miniatures/'+gallery+'/')
 
-if os.environ.get('APP_LOCATION') == 'heroku':
+if environ.get('APP_LOCATION') == 'heroku':
     run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 else:
     run(host='localhost', port=8080, debug=True)
