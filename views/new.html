@@ -6,7 +6,7 @@
   % include('header.html')
   <div class="container">
     <div class="row">
-        <form action="\new" method="post">
+      <form action="\new" method="post">
         <div class="form-group">
             <label for="name">Gallery name:</label>
             <input type="text" class="form-control" id="name" placeholder="Gallery Name" name="name">
@@ -28,12 +28,12 @@
   </div>
 
   <script type="text/javascript">
-    
+
    var uploader = new plupload.Uploader({
            browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
            runtimes : 'html5,flash,silverlight,html4',
            url : "/upload",
-    
+
            // Maximum file size
            max_file_size : '10mb',
     
@@ -50,7 +50,7 @@
    uploader.bind('FilesAdded', function(up, files) {
      var html = '';
      plupload.each(files, function(file) {
-       html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></li>';
+       html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b><input type="hidden" name="pics[]" value="'+ file.name +'"></input></li>';
      });
      document.getElementById('filelist').innerHTML += html;
    });

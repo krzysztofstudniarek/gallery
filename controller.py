@@ -1,7 +1,8 @@
 from bottle import route, run, template, static_file, request, get, post
 from couchdb import Server
-from os import listdir, makedirs, getcwd
+from os import listdir, makedirs, getcwd, rename
 from os.path import isfile, join, exists, dirname
+from plupload import plupload
 
 couch = Server('http://127.0.0.1:5984/')
 
@@ -17,7 +18,6 @@ def index():
 @get('/galleries/<directory>')
 def viewGallery(directory):
     db = couch['directories']
-    print(directory)
     documents = db.view('_all_docs', include_docs=True);
     name = ''
     for document in documents:
@@ -37,17 +37,51 @@ def viewGallery(directory):
 
 @get('/new')
 def newGallery():
-
     info = {
         'title' : 'Adam and Anna',
         'docs' : getDocs()
     }
     return template('new.html', info)   
 
+@post('/new')
+def newGalleryUpload():
+    name = request.forms.get('name')
+    directory = name.replace(" ", "")
+
+    path = "galleries/"+directory
+    miniatures_path = "miniatures/"+directory
+
+    if not exists(path):
+        makedirs(path)
+        
+    if not exists(miniatures_path):
+        makedirs(miniatures_path)
+
+    pictureNames = request.forms.getlist('pics[]')
+    for picture in pictureNames:
+        rename("tmp/"+picture, "galleries/"+directory+"/"+picture)
+
+    db = couch['directories']
+
+    db.save({
+        'directory' : directory,
+        'type' : 'directory',
+        'names':{
+            'en' : name,
+            'pl' : name
+            }
+        })
+
+    info = {
+        'title' : 'Adam and Anna',
+        'docs' : getDocs()
+    }
+    return template('new.html', info) 
+
 @post('/upload')
-def index():
-    from plupload import plupload
-    return plupload.save(request.forms, request.files, getcwd())
+def index(): 
+    path = getcwd() + "/tmp/"
+    return plupload.save(request.forms, request.files, path)
 
 def getDocs():
     

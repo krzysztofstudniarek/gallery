@@ -1,7 +1,9 @@
 # exclude everything
 galleries/*
 miniatures/*
+tmp/*
 
 # exception to the rule
 !galleries/.gitkeep
 !miniatures/.gitkeep 
+!tmp/.gitkeep 
