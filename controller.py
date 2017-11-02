@@ -5,7 +5,7 @@ from os.path import isfile, join, exists, dirname
 from plupload import plupload
 from shutil import copyfile
 
-couch = Server('http://127.0.0.1:5984/')
+couch = Server()
 
 #CONTROLLERS
 @get('/')
@@ -93,8 +93,11 @@ def index():
     return plupload.save(request.forms, request.files, path)
 
 def getDocs():
-    
-    db = couch['directories']
+    try:
+        db = couch['directories']
+    except:
+        db = couch.create['directories']
+        
     docs = db.view('_all_docs', include_docs=True);
     data = []
 
