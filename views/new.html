@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 % include('head.html')
-<script type="text/javascript" src="script/plupload.full.min.js"></script>
+<script src="https://cdn.rawgit.com/JonathanHuot/bottlepy-plupload/fe5ffa11/js/plupload.full.min.js"></script>
 <body>
   % include('header.html')
   <div class="container">
@@ -14,8 +14,9 @@
         <hr/>
         <h2>Images</h2>
         <div class="form-group">
-            <ul id="filelist"></ul>
-            <br />
+            <div id="preview"></div>
+            <div id="filelist"></div>
+            <hr/>
             <label for="browse">Select images:</label>
             <button type="button" id="browse" class="btn btn-primary">Select Imagess</button> 
             &nbsp 
@@ -43,16 +44,43 @@
            filters : [
                {title : "Image files", extensions : "jpg,jpeg,gif,png"}
            ],
+
+           
    });
     
    uploader.init();
     
    uploader.bind('FilesAdded', function(up, files) {
-     var html = '';
-     plupload.each(files, function(file) {
-       html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b><input type="hidden" name="pics[]" value="'+ file.name +'"></input></li>';
-     });
-     document.getElementById('filelist').innerHTML += html;
+
+    $.each(files, function(){
+        
+		var img = new mOxie.Image();
+
+		img.onload = function() {
+			this.embed($('#preview').get(0), {
+				width: 100,
+				height: 100,
+				crop: true
+			});
+		};
+
+		img.onembedded = function() {
+			this.destroy();
+		};
+
+		img.onerror = function() {
+			this.destroy();
+		};
+
+		img.load(this.getSource());        
+        
+    });
+    
+    var html = '';
+    plupload.each(files, function(file) {
+      html += '<div type="hidden" id="' + file.id + '" style="display: none;">'+ file.name + ' (' + plupload.formatSize(file.size) + ') <b></b><input type="hidden" name="pics[]" value="'+ file.name +'"></input></div>';
+    });
+    document.getElementById('filelist').innerHTML += html;
    });
     
    uploader.bind('UploadProgress', function(up, file) {
@@ -66,6 +94,10 @@
    document.getElementById('upload').onclick = function() {
      uploader.start();
    };
+
+   $('canvas').click(function(){
+      alert("Add to miniatures");
+   });
     
    </script>
 </body>

@@ -53,14 +53,14 @@ def newGalleryUpload():
 
     if not exists(path):
         makedirs(path)
-        
+
     if not exists(miniatures_path):
         makedirs(miniatures_path)
 
     pictureNames = request.forms.getlist('pics[]')
     for picture in pictureNames:
         rename("tmp/"+picture, "galleries/"+directory+"/"+picture)
-
+    
     db = couch['directories']
 
     db.save({
