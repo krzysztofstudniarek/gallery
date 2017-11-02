@@ -67,10 +67,10 @@ def newGalleryUpload():
     for picture in pictureNames:
         rename("tmp/"+picture, "galleries/"+directory+"/"+picture)
     
-
-
-
-    db = couch['directories']
+    try:
+        db = couch['directories']
+    except:
+        db = couch.create('directories')
 
     db.save({
         'directory' : directory,
@@ -96,7 +96,7 @@ def getDocs():
     try:
         db = couch['directories']
     except:
-        db = couch.create['directories']
+        db = couch.create('directories')
 
     docs = db.view('_all_docs', include_docs=True);
     data = []
