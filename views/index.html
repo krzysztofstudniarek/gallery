@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+% include('head.html')
+<body>
+  % include('header.html')
+  <div class="container">
+    <div class="row">
+      % for item in docs:
+      <div class="col-sm-4" >
+        <a href="/galleries/{{item['directory']}}">
+          <center><h3>{{item['names']['pl']}}</h3></center>
+          <div class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            
+              <ol class="carousel-indicators">
+                <li data-slide-to="0" class="active"></li>
+                <li data-slide-to="1"></li>
+                <li data-slide-to="2"></li>
+              </ol>
+            
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <div class="item active" style="height: 100% important!" id="gallery">
+                <img src="miniature/{{item['directory']}}/miniature1.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
+              </div>
+
+              <div class="item" style="height: 100% important!" id="gallery">
+                <img src="miniature/{{item['directory']}}/miniature2.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
+              </div>
+
+              <div class="item" style="height: 100% important!" id="gallery">
+                  <img src="miniature/{{item['directory']}}/miniature3.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      %end
+    </div>
+  </div>
+</body>
+</html>
