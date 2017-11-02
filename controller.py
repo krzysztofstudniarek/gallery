@@ -5,7 +5,7 @@ from os.path import isfile, join, exists, dirname
 from plupload import plupload
 from shutil import copyfile
 
-couch = Server()
+couch = Server('http://0.0.0.0:5984/')
 
 #CONTROLLERS
 @get('/')
