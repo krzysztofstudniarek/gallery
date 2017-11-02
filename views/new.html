@@ -23,12 +23,24 @@
             <button type="button" id="upload" class="btn btn-default">Upload</button>
         </div>
         <hr/>
+        <h2>Miniatures</h2>
+        <select multiple class="form-control" id="miniatures" name="miniatures[]">
+
+        </select>
+        <hr/>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
     </div>
   </div>
 
   <script type="text/javascript">
+
+  $("select").change(function() {
+      if ($("select option:selected").length > 3) {
+          $(this).removeAttr("selected");
+          alert('You can select upto 3 options only');
+      }
+  });
 
    var uploader = new plupload.Uploader({
            browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
@@ -57,11 +69,11 @@
 		var img = new mOxie.Image();
 
 		img.onload = function() {
-			this.embed($('#preview').get(0), {
+      this.embed($('#preview').get(0), {
 				width: 100,
 				height: 100,
 				crop: true
-			});
+      });
 		};
 
 		img.onembedded = function() {
@@ -75,12 +87,15 @@
 		img.load(this.getSource());        
         
     });
-    
+      
     var html = '';
+    var select = '';
     plupload.each(files, function(file) {
       html += '<div type="hidden" id="' + file.id + '" style="display: none;">'+ file.name + ' (' + plupload.formatSize(file.size) + ') <b></b><input type="hidden" name="pics[]" value="'+ file.name +'"></input></div>';
+      select += '<option>'+file.name+'</option>'
     });
     document.getElementById('filelist').innerHTML += html;
+    document.getElementById('miniatures').innerHTML += select;
    });
     
    uploader.bind('UploadProgress', function(up, file) {
@@ -94,11 +109,6 @@
    document.getElementById('upload').onclick = function() {
      uploader.start();
    };
-
-   $('canvas').click(function(){
-      alert("Add to miniatures");
-   });
-    
    </script>
 </body>
 </html>

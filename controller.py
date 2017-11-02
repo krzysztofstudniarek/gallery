@@ -3,6 +3,7 @@ from couchdb import Server
 from os import listdir, makedirs, getcwd, rename
 from os.path import isfile, join, exists, dirname
 from plupload import plupload
+from shutil import copyfile
 
 couch = Server('http://127.0.0.1:5984/')
 
@@ -57,10 +58,18 @@ def newGalleryUpload():
     if not exists(miniatures_path):
         makedirs(miniatures_path)
 
+    index = 1
+    for miniature in request.forms.getlist('miniatures[]'):
+        copyfile("tmp/"+miniature, "miniatures/"+directory+"/miniature"+str(index)+".jpg")
+        index += 1
+
     pictureNames = request.forms.getlist('pics[]')
     for picture in pictureNames:
         rename("tmp/"+picture, "galleries/"+directory+"/"+picture)
     
+
+
+
     db = couch['directories']
 
     db.save({
