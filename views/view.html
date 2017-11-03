@@ -5,11 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../style/style.css">
-  <link rel="stylesheet" href="../style/lightbox.css">
+  <link rel="stylesheet" href="/static/style/style.css">
+  <link rel="stylesheet" href="/static/style/lightbox.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="../script/lightbox.js"></script>
+  <script src="/static/script/lightbox.js"></script>
 </head>
 <body>
   % include('header.html')
@@ -20,8 +20,8 @@
       <div class="col-sm-4">
         <div id="gallery">
             <!---->
-            <a href="/galleries/{{directory}}/{{item}}" data-lightbox="{{title}}">
-                <img src="/galleries/{{directory}}/{{item}}"  id="pic" height="200">
+            <a href="/static/galleries/{{directory}}/{{item}}" data-lightbox="{{title}}">
+                <img src="/static/galleries/{{directory}}/{{item}}"  id="pic" height="200">
             </a>
         </div>
       </div>

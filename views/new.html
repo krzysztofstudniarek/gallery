@@ -6,6 +6,16 @@
   % include('header.html')
   <div class="container">
     <div class="row">
+        % if defined('error'):
+        <div class="alert alert-danger">
+            <strong>Error!</strong> {{error}}
+        </div>
+        % end
+        % if defined('success'):
+        <div class="alert alert-success">
+            <strong>Error!</strong> {{success}}
+        </div>
+        % end
       <form action="\new" method="post">
         <div class="form-group">
             <label for="name">Gallery name:</label>
@@ -45,7 +55,7 @@
    var uploader = new plupload.Uploader({
            browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
            runtimes : 'html5,flash,silverlight,html4',
-           url : "/upload",
+           url : "upload",
 
            // Maximum file size
            max_file_size : '10mb',

@@ -1,6 +1,6 @@
 .jumbotron {
     margin-bottom: 0px;
-    background-image: url(/picture/background.jpg);
+    background-image: url(/static/picture/background.jpg);
     background-position: 0% 45%;
     height : 300px;
     background-size: cover;
