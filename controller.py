@@ -132,7 +132,4 @@ def serve_gallery_picture(gallery, picture):
 def serve_pictures(gallery, name):
     return static_file(name, root='miniatures/'+gallery+'/')
 
-if environ.get('APP_LOCATION') == 'heroku':
-    run(host="0.0.0.0", port=int(environ.get("PORT", 5000)))
-else:
-    run(host='localhost', port=8080, debug=True)
+run(host='0.0.0.0', port=8080, debug=True)

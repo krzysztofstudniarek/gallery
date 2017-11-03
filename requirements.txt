@@ -1,3 +1,0 @@
-bottle==0.12.1
-plupload==1.0
-couchdb==1.1
