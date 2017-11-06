@@ -7,11 +7,11 @@ import new
 #CONTROLLERS
 @get('/')
 def viewIndexPage():
-    pageData = {
+    viewData = {
         'title' : 'Adam and Anna',
         'galleries' : getGalleries()
     }
-    return template('index.html', pageData)
+    return template('index.html', viewData)
 
 @get('/galleries/<directory>')
 def viewGallery(directory):
@@ -19,23 +19,23 @@ def viewGallery(directory):
     try:
         name, data = getGalleryData(directory)
 
-        info = {
+        viewData = {
             'title' : name,
             'directory' : directory,
             'imagesPaths' : data,
             'galleries' : getGalleries()
         }
-        return template('view.html', info)
+        return template('view.html', viewData)
 
     except Exception as error:
         
-        info = {
+        viewData = {
             'title' : 'Adam and Anna',
             'galleries' : getGalleries(),
             'error' : error
         }
 
-        return template('index.html', info) 
+        return template('index.html', viewData) 
 
 def main():
     mount('static/', static.app)
