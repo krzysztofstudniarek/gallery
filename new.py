@@ -8,7 +8,7 @@ from database import getDocs, saveNewGallery
 app = Bottle()
 
 @app.get('/')
-def newGallery():
+def viewNewGalleryForm():
     info = {
         'title' : 'Adam and Anna',
         'docs' : getDocs()
@@ -16,7 +16,7 @@ def newGallery():
     return template('new.html', info)   
 
 @app.post('/')
-def newGalleryUpload():
+def addNewGallery():
     name = request.forms.get('name')
     directory = name.replace(" ", "")
 
@@ -42,19 +42,19 @@ def newGalleryUpload():
 
         info = {
             'title' : 'Adam and Anna',
-            'docs' : getDocs(),
+            'galleries' : getGalleries(),
             'success' : 'New Gallery sucessfully created'
         }
         return template('new.html', info) 
     except Exception :
         info = {
             'title' : 'Adam and Anna',
-            'docs' : getDocs(),
+            'galleries' : getGalleries(),
             'error' : 'Something went wrong, try one more time (' + Exception +')'
         }
         return template('new.html', info) 
 
 @app.post('/upload')
-def upload(): 
+def uploadNewImage(): 
     path = getcwd() + "/tmp/"
     return plupload.save(request.forms, request.files, path)

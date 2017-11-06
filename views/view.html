@@ -16,12 +16,12 @@
   <div class="container">
     <h3>{{title}}</h3>
     <div class="row">
-      % for item in data:
+      % for image in imagesPaths:
       <div class="col-sm-4">
         <div id="gallery">
             <!---->
-            <a href="/static/galleries/{{directory}}/{{item}}" data-lightbox="{{title}}">
-                <img src="/static/galleries/{{directory}}/{{item}}"  id="pic" height="200">
+            <a href="/static/galleries/{{directory}}/{{image}}" data-lightbox="{{title}}">
+                <img src="/static/galleries/{{directory}}/{{image}}"  id="pic" height="200">
             </a>
         </div>
       </div>

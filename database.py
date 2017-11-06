@@ -4,7 +4,7 @@ from os.path import isfile, join
 
 couch = Server('http://0.0.0.0:5984/')
 
-def getDocs():
+def getGalleries():
     db = getDocDatabase()
 
     docs = db.view('_all_docs', include_docs=True);
@@ -21,12 +21,12 @@ def getGalleryData(directory):
     name = ''
     
     path = 'galleries/'+directory+'/'
-    data = [f for f in listdir(path) if isfile(join(path, f))]
+    imagesPaths = [f for f in listdir(path) if isfile(join(path, f))]
 
     for document in documents:
         if document.doc['directory'] == directory :
             name = document.doc['names']['pl']
-            return name, data
+            return name, imagesPaths
     
     raise Exception('No gallery of that name') 
 

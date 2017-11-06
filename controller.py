@@ -6,12 +6,12 @@ import new
 
 #CONTROLLERS
 @get('/')
-def index():
-    info = {
+def viewIndexPage():
+    pageData = {
         'title' : 'Adam and Anna',
-        'docs' : getDocs()
+        'galleries' : getGalleries()
     }
-    return template('index.html', info)
+    return template('index.html', pageData)
 
 @get('/galleries/<directory>')
 def viewGallery(directory):
@@ -22,8 +22,8 @@ def viewGallery(directory):
         info = {
             'title' : name,
             'directory' : directory,
-            'data' : data,
-            'docs' : getDocs()
+            'imagesPaths' : data,
+            'galleries' : getGalleries()
         }
         return template('view.html', info)
 
@@ -31,7 +31,7 @@ def viewGallery(directory):
         
         info = {
             'title' : 'Adam and Anna',
-            'docs' : getDocs(),
+            'galleries' : getGalleries(),
             'error' : error
         }
 
