@@ -3,7 +3,7 @@ from os import makedirs, rename, getcwd
 from os.path import exists
 from plupload import plupload
 from shutil import copyfile
-from database import getDocs, saveNewGallery
+from database import getGalleries, saveNewGallery
 
 app = Bottle()
 

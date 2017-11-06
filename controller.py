@@ -1,6 +1,6 @@
 from bottle import run, template, get, mount
 
-from database import getDocs, getGalleryData
+from database import getGalleries, getGalleryData
 import static
 import new
 
