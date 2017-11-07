@@ -11,9 +11,9 @@ app = Bottle()
 def viewNewGalleryForm():
     info = {
         'title' : 'Adam and Anna',
-        'docs' : getDocs()
+        'galleries' : getGalleries()
     }
-    return template('new.html', info)   
+    return template('newGallery/new.html', info)   
 
 @app.post('/')
 def addNewGallery():
@@ -46,13 +46,13 @@ def addNewGallery():
             'success' : 'New Gallery sucessfully created'
         }
         return template('new.html', info) 
-    except Exception :
+    except Exception as exception:
         info = {
             'title' : 'Adam and Anna',
             'galleries' : getGalleries(),
-            'error' : 'Something went wrong, try one more time (' + Exception +')'
+            'error' : 'Something went wrong, try one more time'
         }
-        return template('new.html', info) 
+        return template('newGallery/new.html', info) 
 
 @app.post('/upload')
 def uploadNewImage(): 

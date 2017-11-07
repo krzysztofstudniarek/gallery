@@ -6,4 +6,7 @@ tmp/*
 # exception to the rule
 !galleries/.gitkeep
 !miniatures/.gitkeep 
-!tmp/.gitkeep 
+!tmp/.gitkeep
+
+# exclude all .pyc files
+*.pyc 
