@@ -20,17 +20,16 @@ def addNewGallery():
     name = request.forms.get('name')
     
     galleryDocument = _initializeNewGalleryDocument(name)
-
     _initializeNewGalleryDirectories(galleryDocument)
     _populateGallery(galleryDocument, request)
-
-    saveNewGallery(name, directory)
+    saveNewGallery(name, galleryDocument['directory'])
 
     info = {
         'title' : 'Adam and Anna',
         'galleries' : getGalleries(),
         'success' : 'New Gallery sucessfully created'
     }
+
     return template('new.html', info) 
     
 
