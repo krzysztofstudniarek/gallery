@@ -1,7 +1,7 @@
 from bottle import run, template, get, mount
 
-from database import getGalleries, getGalleryData
-import static
+from databaseHandler import getGalleries, getGalleryData
+import staticFilesServer
 import newGalleryAppController
 
 #CONTROLLERS
@@ -38,7 +38,7 @@ def viewGallery(directory):
         return template('mainPage/index.html', viewData) 
 
 def main():
-    mount('static/', static.app)
+    mount('static/', staticFilesServer.app)
     mount('new', newGalleryAppController.app)
     run(host='0.0.0.0', port=8080, debug=True)
 
