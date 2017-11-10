@@ -6,42 +6,28 @@ couch = Server('http://0.0.0.0:5984/')
 
 def getGalleries():
     db = getDocDatabase()
-
     docs = db.view('_all_docs', include_docs=True);
-    data = []
+    return docs
 
-    for item in docs:
-        data.append(item.doc)
-    
-    return data
-
-def getGalleryData(directory):
+def getGalleryData(galleryId):
     db = getDocDatabase()
-    documents = db.view('_all_docs', include_docs=True);
-    name = ''
+    document = db.get(galleryId, include_docs=True);
+    print(document)
+    name = document['names']['pl']
     
-    path = 'galleries/'+directory+'/'
+    path = 'galleries/'+galleryId+'/'
     imagesPaths = [f for f in listdir(path) if isfile(join(path, f))]
 
-    for document in documents:
-        if document.doc['directory'] == directory :
-            name = document.doc['names']['pl']
-            return name, imagesPaths
-    
-    raise Exception('No gallery of that name') 
+    return name, imagesPaths
 
 
-def saveNewGallery(name, directory):
+def saveNewGallery(galleryDocument):
     db = getDocDatabase()
+    print("ALA MA KOTA")
+    id, rev = db.save(galleryDocument)
+    print(id)
 
-    db.save({
-        'directory' : directory,
-        'type' : 'directory',
-        'names':{
-            'en' : name,
-            'pl' : name
-            }
-        })
+    return id
 
 def getDocDatabase():
     try:

@@ -20,9 +20,11 @@ def addNewGallery():
     name = request.forms.get('name')
     
     galleryDocument = _initializeNewGalleryDocument(name)
-    _initializeNewGalleryDirectories(galleryDocument)
-    _populateGallery(galleryDocument, request)
-    saveNewGallery(name, galleryDocument['directory'])
+    galleryId = saveNewGallery(galleryDocument)
+
+    _initializeNewGalleryDirectories(galleryId)
+    _populateGallery(galleryId, request)
+    
 
     info = {
         'title' : 'Adam and Anna',
@@ -30,19 +32,12 @@ def addNewGallery():
         'success' : 'New Gallery sucessfully created'
     }
 
-    return template('new.html', info) 
+    return template('mainPage/index.html', info) 
     
 
 def _initializeNewGalleryDocument(name):
     directory = _getNewGalleryDirectory(name)
-
-    path = _getNewGalleryPath(directory)
-    miniatures_path = _getNewMiniaturesPath(directory)
-
     return {
-        'directory' : directory,
-        'gallery_path' : path,
-        'miniatures_path' : miniatures_path,
         'names': {
             'en' : name,
             'pl' : name
@@ -52,38 +47,36 @@ def _initializeNewGalleryDocument(name):
 def _getNewGalleryDirectory(name):
     return name.replace(" ","")
 
-def _getNewGalleryPath(directory):
-    return "galleries/"+directory
+def _initializeNewGalleryDirectories(galleryId):
+    _initializeNewGalleryPath(galleryId)
+    _initializeNewMiniaturesPath(galleryId)
 
-def _getNewMiniaturesPath(directory):
-    return "miniatures/"+directory
+def _initializeNewGalleryPath(galleryId):
+    path = 'galleries/'+galleryId
 
-def _initializeNewGalleryDirectories(galleryDocument):
-    _initializeNewGalleryPath(galleryDocument)
-    _initializeNewMiniaturesPath(galleryDocument)
+    if not exists(path):
+        makedirs(path)
 
-def _initializeNewGalleryPath(galleryDocument):
-    if not exists(galleryDocument['gallery_path']):
-        makedirs(galleryDocument['gallery_path'])
+def _initializeNewMiniaturesPath(galleryId):
+    path = 'miniatures/'+galleryId
 
-def _initializeNewMiniaturesPath(galleryDocument):
-    if not exists(galleryDocument['miniatures_path']):
-        makedirs(galleryDocument['miniatures_path'])
+    if not exists(path):
+        makedirs(path)
 
-def _populateGallery(galleryDocument, request):
-    _copyMiniatureImages(galleryDocument, request)
-    _moveImagesToGallery(galleryDocument, request)
+def _populateGallery(galleryId, request):
+    _copyMiniatureImages(galleryId, request)
+    _moveImagesToGallery(galleryId, request)
 
-def _copyMiniatureImages(galleryDocument, request):
+def _copyMiniatureImages(galleryId, request):
     index = 1
     for miniature in request.forms.getlist('miniatures[]'):
-        copyfile("tmp/"+miniature, galleryDocument['miniatures_path']+"/miniature"+str(index)+".jpg")
+        copyfile("tmp/"+miniature, 'miniatures/'+galleryId+"/miniature"+str(index)+".jpg")
         index += 1
 
-def _moveImagesToGallery(galleryDocument, request):
+def _moveImagesToGallery(galleryId, request):
     pictureNames = request.forms.getlist('pics[]')
     for picture in pictureNames:
-        rename("tmp/"+picture, "galleries/"+directory+"/"+picture)
+        rename("tmp/"+picture, "galleries/"+galleryId+"/"+picture)
 
 @app.post('/upload')
 def uploadNewImage(): 

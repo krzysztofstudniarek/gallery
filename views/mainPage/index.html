@@ -12,8 +12,8 @@
       % end
       % for gallery in galleries:
       <div class="col-sm-4" >
-        <a href="/galleries/{{gallery['directory']}}">
-          <center><h3>{{gallery['names']['pl']}}</h3></center>
+        <a href="/galleries/{{gallery['id']}}">
+          <center><h3>{{gallery.doc['names']['pl']}}</h3></center>
           <div class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
             
@@ -27,15 +27,15 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
               <div class="item active" style="height: 100% important!" id="gallery">
-                <img src="static/miniature/{{gallery['directory']}}/miniature1.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
+                <img src="static/miniature/{{gallery['id']}}/miniature1.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
               </div>
 
               <div class="item" style="height: 100% important!" id="gallery">
-                <img src="static/miniature/{{gallery['directory']}}/miniature2.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
+                <img src="static/miniature/{{gallery['id']}}/miniature2.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
               </div>
 
               <div class="item" style="height: 100% important!" id="gallery">
-                  <img src="static/miniature/{{gallery['directory']}}/miniature3.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
+                  <img src="static/miniature/{{gallery['id']}}/miniature3.jpg" id="pic" class="img-rounded" style="max-width: 100%; max-height: 100%;">
               </div>
             </div>
           </div>
