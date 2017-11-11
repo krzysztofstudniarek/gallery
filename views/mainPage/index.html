@@ -12,11 +12,12 @@
       % end
       % for gallery in galleries:
       <div class="col-sm-4" >
-        <a href="/galleries/{{gallery['id']}}/{{language}}">
           %if defined('language') and language == 'pl':
-            <center><h3>{{gallery.doc['names']['pl']}}</h3></center>
+            <a href="/galleries/{{gallery['id']}}/{{language}}">
+              <center><h3>{{gallery.doc['names']['pl']}}</h3></center>
           %else :
-            <center><h3>{{gallery.doc['names']['pl']}}</h3></center>
+            <a href="/galleries/{{gallery['id']}}/en">
+              <center><h3>{{gallery.doc['names']['en']}}</h3></center>
           %end
           <div class="carousel slide" data-ride="carousel">
             <!-- Indicators -->

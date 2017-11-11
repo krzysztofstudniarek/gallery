@@ -1,6 +1,8 @@
 from bottle import run, template, get, mount
+from os import listdir
+from os.path import isfile, join
 
-from databaseHandler import getGalleries, getGalleryData
+import databaseHandler
 import staticFilesServer
 import newGalleryAppController
 
@@ -11,30 +13,39 @@ def viewIndexPage(lang='pl'):
     viewData = {
         'title' : 'Adam and Anna',
         'language' : lang,
-        'galleries' : getGalleries()
+        'galleries' : databaseHandler.getGalleries()
     }
     return template('mainPage/index.html', viewData)
 
 @get('/galleries/<galleryId>/<lang>')
 def viewGallery(galleryId, lang):
-    name_pl, name_en, imagesPaths = getGalleryData(galleryId)
-    if lang == 'pl' :
-        viewData = {
-            'title' : name_pl,
-            'language' : lang,
-            'directory' : galleryId,
-            'imagesPaths' : imagesPaths,
-            'galleries' : getGalleries()
-        }
-    else :
-        viewData = {
-            'title' : name_en,
-            'language' : lang,
-            'directory' : galleryId,
-            'imagesPaths' : imagesPaths,
-            'galleries' : getGalleries()
-        }
+    document = databaseHandler.getGalleryData(galleryId)
+    imagesNames = _getImagesNames(galleryId)
+    viewData = _prepareGalleryViewData(document, galleryId, lang, imagesNames)
     return template('mainPage/view.html', viewData)
+
+def _prepareGalleryViewData(document, galleryId, language, imagesNames):
+    title = _getTitle(document, language)
+    return _doPrepareGalleyViewData(title, language, galleryId, imagesNames)
+    
+def _getTitle(document, lang):
+    if lang == 'pl' :
+        return document['names']['pl']
+    else :
+        return document['names']['en']
+
+def _doPrepareGalleyViewData(title, language, galleryId, imagesNames):
+    return {
+            'title' : title,
+            'language' : language,
+            'directory' : galleryId,
+            'imagesPaths' : imagesNames,
+            'galleries' : databaseHandler.getGalleries()
+        }
+
+def _getImagesNames(galleryId):
+    path = 'galleries/'+galleryId+'/'
+    return [f for f in listdir(path) if isfile(join(path, f))]
 
 def main():
     mount('static/', staticFilesServer.app)

@@ -3,38 +3,42 @@ from os import makedirs, rename, getcwd
 from os.path import exists
 from plupload import plupload
 from shutil import copyfile
-from databaseHandler import getGalleries, saveNewGallery
+import databaseHandler
 
 app = Bottle()
+
+@app.post('/upload')
+def uploadNewImage(): 
+    path = getcwd() + "/tmp/"
+    return plupload.save(request.forms, request.files, path)
 
 @app.get('/')
 def viewNewGalleryForm():
     info = {
         'title' : 'Adam and Anna',
-        'galleries' : getGalleries()
+        'galleries' : databaseHandler.getGalleries()
     }
     return template('newGallery/new.html', info)   
 
 @app.post('/')
 def addNewGallery():
-    name_pl = unicode(request.forms.get('name_pl'), 'utf-8')
-    name_en = unicode(request.forms.get('name_en'))
-    
+    name_pl, name_en = _getNames(request)
     galleryDocument = _initializeNewGalleryDocument(name_pl, name_en)
-    galleryId = saveNewGallery(galleryDocument)
-
+    galleryId = databaseHandler.saveNewGallery(galleryDocument)
     _initializeNewGalleryDirectories(galleryId)
     _populateGallery(galleryId, request)
     
-
     info = {
         'title' : 'Adam and Anna',
-        'galleries' : getGalleries(),
+        'galleries' : databaseHandler.getGalleries(),
         'success' : 'New Gallery sucessfully created'
     }
-
     return template('mainPage/index.html', info) 
     
+def _getNames(request) :
+    name_pl = unicode(request.forms.get('name_pl'), 'utf-8')
+    name_en = unicode(request.forms.get('name_en'))
+    return name_pl, name_en
 
 def _initializeNewGalleryDocument(name_pl, name_en):
     return {
@@ -74,8 +78,3 @@ def _moveImagesToGallery(galleryId, request):
     pictureNames = request.forms.getlist('pics[]')
     for picture in pictureNames:
         rename("tmp/"+picture, "galleries/"+galleryId+"/"+picture)
-
-@app.post('/upload')
-def uploadNewImage(): 
-    path = getcwd() + "/tmp/"
-    return plupload.save(request.forms, request.files, path)
