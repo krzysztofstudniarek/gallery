@@ -18,8 +18,11 @@
         % end
       <form action="\new" method="post">
         <div class="form-group">
-            <label for="name">Gallery name:</label>
-            <input type="text" class="form-control" id="name" placeholder="Gallery Name" name="name">
+            <label for="name">Gallery name (Polish):</label>
+            <input type="text" class="form-control" id="name_pl" placeholder="Gallery Name" name="name_pl">
+
+            <label for="name">Gallery name (English):</label>
+            <input type="text" class="form-control" id="name_en" placeholder="Gallery Name" name="name_en">
         </div>
         <hr/>
         <h2>Images</h2>
@@ -33,17 +36,18 @@
             <button type="button" id="upload" class="btn btn-default">Upload</button>
         </div>
         <hr/>
-        <h2>Miniatures</h2>
-        <select multiple class="form-control" id="miniatures" name="miniatures[]">
-
-        </select>
-        <hr/>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <div id="toggle" class="form-group">
+            <h2>Miniatures</h2>
+            <select multiple class="form-control" id="miniatures" name="miniatures[]">
+            </select>
+            <hr/>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
     </form>
     </div>
   </div>
 
-  <script type="text/javascript">
+  <script type="text/javascript">      
 
   $("select").change(function() {
       if ($("select option:selected").length > 3) {
@@ -56,18 +60,11 @@
            browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
            runtimes : 'html5,flash,silverlight,html4',
            url : "upload",
-
-           // Maximum file size
            max_file_size : '10mb',
-    
            chunk_size: '1mb',
-    
-           // Specify what files to browse for
            filters : [
                {title : "Image files", extensions : "jpg,jpeg,gif,png"}
            ],
-
-           
    });
     
    uploader.init();
@@ -79,11 +76,11 @@
 		var img = new mOxie.Image();
 
 		img.onload = function() {
-      this.embed($('#preview').get(0), {
-				width: 100,
-				height: 100,
-				crop: true
-      });
+            this.embed($('#preview').get(0), {
+                        width: 100,
+                        height: 100,
+                        crop: true
+            });
 		};
 
 		img.onembedded = function() {
@@ -100,16 +97,14 @@
       
     var html = '';
     var select = '';
+
     plupload.each(files, function(file) {
       html += '<div type="hidden" id="' + file.id + '" style="display: none;">'+ file.name + ' (' + plupload.formatSize(file.size) + ') <b></b><input type="hidden" name="pics[]" value="'+ file.name +'"></input></div>';
       select += '<option>'+file.name+'</option>'
     });
+
     document.getElementById('filelist').innerHTML += html;
     document.getElementById('miniatures').innerHTML += select;
-   });
-    
-   uploader.bind('UploadProgress', function(up, file) {
-     document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
    });
     
    uploader.bind('Error', function(up, err) {
@@ -118,6 +113,7 @@
     
    document.getElementById('upload').onclick = function() {
      uploader.start();
+     $("#toggle").toggle();
    };
    </script>
 </body>

@@ -13,12 +13,13 @@ def getGalleryData(galleryId):
     db = getDocDatabase()
     document = db.get(galleryId, include_docs=True);
     print(document)
-    name = document['names']['pl']
+    name_pl = document['names']['pl']
+    name_en = document['names']['en']
     
     path = 'galleries/'+galleryId+'/'
     imagesPaths = [f for f in listdir(path) if isfile(join(path, f))]
 
-    return name, imagesPaths
+    return name_pl, name_en, imagesPaths
 
 
 def saveNewGallery(galleryDocument):

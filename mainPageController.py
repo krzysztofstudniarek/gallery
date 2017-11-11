@@ -6,22 +6,34 @@ import newGalleryAppController
 
 #CONTROLLERS
 @get('/')
-def viewIndexPage():
+@get('/<lang>')
+def viewIndexPage(lang='pl'):
     viewData = {
         'title' : 'Adam and Anna',
+        'language' : lang,
         'galleries' : getGalleries()
     }
     return template('mainPage/index.html', viewData)
 
-@get('/galleries/<galleryId>')
-def viewGallery(galleryId):
-    name, imagesPaths = getGalleryData(galleryId)
-    viewData = {
-        'title' : name,
-        'directory' : galleryId,
-        'imagesPaths' : imagesPaths,
-        'galleries' : getGalleries()
-    }
+@get('/galleries/<galleryId>/<lang>')
+def viewGallery(galleryId, lang):
+    name_pl, name_en, imagesPaths = getGalleryData(galleryId)
+    if lang == 'pl' :
+        viewData = {
+            'title' : name_pl,
+            'language' : lang,
+            'directory' : galleryId,
+            'imagesPaths' : imagesPaths,
+            'galleries' : getGalleries()
+        }
+    else :
+        viewData = {
+            'title' : name_en,
+            'language' : lang,
+            'directory' : galleryId,
+            'imagesPaths' : imagesPaths,
+            'galleries' : getGalleries()
+        }
     return template('mainPage/view.html', viewData)
 
 def main():

@@ -2,7 +2,11 @@
     <div class="jumbotron text-center">
         <h1>Anna & Adam</h1>
         <h3>02.09.2017</h3>
-        <p>Thank you for spending this time with us.</p> 
+        %if defined('language') and language == 'pl' :
+            <p>Dziękujemy za spędzenie z nami tego pięknego dnia.</p>
+        %else :
+            <p>Thank you for spending this time with us.</p> 
+        %end
     </div>
 </a>
   
@@ -26,7 +30,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Galleries <span class="caret"></span></a>
             <ul class="dropdown-menu">
             % for gallery in galleries:
-                <li><a href="/galleries/{{gallery['id']}}">{{gallery.doc['names']['pl']}}</a></li>
+                <li><a href="/galleries/{{gallery['id']}}/{{language}}">{{gallery.doc['names']['pl']}}</a></li>
             %end
             </ul>
         </li>

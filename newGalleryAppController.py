@@ -17,9 +17,10 @@ def viewNewGalleryForm():
 
 @app.post('/')
 def addNewGallery():
-    name = request.forms.get('name')
+    name_pl = unicode(request.forms.get('name_pl'), 'utf-8')
+    name_en = unicode(request.forms.get('name_en'))
     
-    galleryDocument = _initializeNewGalleryDocument(name)
+    galleryDocument = _initializeNewGalleryDocument(name_pl, name_en)
     galleryId = saveNewGallery(galleryDocument)
 
     _initializeNewGalleryDirectories(galleryId)
@@ -35,17 +36,13 @@ def addNewGallery():
     return template('mainPage/index.html', info) 
     
 
-def _initializeNewGalleryDocument(name):
-    directory = _getNewGalleryDirectory(name)
+def _initializeNewGalleryDocument(name_pl, name_en):
     return {
         'names': {
-            'en' : name,
-            'pl' : name
+            'en' : name_en,
+            'pl' : name_pl
         }
     }   
-
-def _getNewGalleryDirectory(name):
-    return name.replace(" ","")
 
 def _initializeNewGalleryDirectories(galleryId):
     _initializeNewGalleryPath(galleryId)
